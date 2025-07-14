@@ -17,6 +17,28 @@
       text-align: center;
       padding: 20px;
     }
+    .hashcode {
+      font-size: 2.2rem;
+      font-family: "Consolas", "Menlo", "Monaco", "Courier New", monospace;
+      letter-spacing: 0.08em;
+      background: #f6faf7;
+      border: 2px solid #010A02;
+      border-radius: 10px;
+      padding: 18px 25px;
+      margin-bottom: 18px;
+      margin-top: 8px;
+      word-break: break-all;
+      user-select: all;
+      cursor: pointer;
+      color: #156c23;
+    }
+    .copy-guide {
+      font-size: 1.18rem;
+      margin-bottom: 38px;
+      color: #01667b;
+      font-weight: bold;
+      letter-spacing: 0.03em;
+    }
     a {
       font-size: 2.5rem;
       color: #010A02;
@@ -41,7 +63,45 @@
   </style>
 </head>
 <body>
+  <div class="hashcode" id="hashcode">해시코드 계산 중...</div>
+  <div class="copy-guide">위 코드를 복사해 google form에 붙여넣기 하세요</div>
   <a href="https://forms.gle/SnvBw4uft9H2bxa8A" target="_blank" rel="noopener noreferrer">https://forms.gle/SnvBw4uft9H2bxa8A</a>
   <p>QPI는 당신의 열정을 응원합니다!</p>
+  <script>
+    // localStorage key
+    const STORAGE_KEY = "QPI_student_hashcode_v1";
+
+    async function askStudentIDAndHash() {
+      // localStorage에 이미 해시코드가 있으면 바로 출력
+      const savedHash = localStorage.getItem(STORAGE_KEY);
+      if (savedHash) {
+        document.getElementById('hashcode').textContent = savedHash;
+        return;
+      }
+      // 없으면 prompt로 학번 입력
+      let sid = '';
+      while (!sid) {
+        sid = prompt("학번을 공백 없이 입력하세요.\n(예: 1401, 23104 등)");
+        if (sid === null) { // 사용자가 취소를 누르면 종료
+          document.getElementById('hashcode').textContent = "학번 입력이 필요합니다.";
+          return;
+        }
+        sid = sid.replace(/\s+/g, "");
+        if (!sid) alert("학번을 반드시 입력해야 합니다.");
+      }
+
+      // SHA-256 해시 계산
+      const enc = new TextEncoder();
+      const data = enc.encode(sid);
+      const hashBuffer = await crypto.subtle.digest('SHA-256', data);
+      const hashArray = Array.from(new Uint8Array(hashBuffer));
+      const hashHex = hashArray.map(b => b.toString(16).padStart(2, '0')).join('');
+      // 저장 & 출력
+      localStorage.setItem(STORAGE_KEY, hashHex);
+      document.getElementById('hashcode').textContent = hashHex;
+    }
+
+    askStudentIDAndHash();
+  </script>
 </body>
 </html>
