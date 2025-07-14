@@ -83,34 +83,32 @@
   </div>
 
   <script>
-    // 시계 업데이트 함수
-    function updateClock() {
-      const now = new Date();
-      const h = String(now.getHours()).padStart(2, '0');
-      const m = String(now.getMinutes()).padStart(2, '0');
-      const s = String(now.getSeconds()).padStart(2, '0');
-      document.getElementById('clock').textContent = `${h}:${m}:${s}`;
-    }
-
-    // 1초마다 시계 업데이트
-    setInterval(updateClock, 1000);
-    updateClock(); // 처음 한 번 즉시 실행
-
-    function checkAnswer() {
-      const input = document.getElementById('answerInput').value.trim();
-      const currentSeconds = new Date().getSeconds();
-
-      const message = document.getElementById('message');
-
-      if (input == 3.141 && currentSeconds <= 15 ＆＆ currentSeconds >= 10) {
-        message.textContent = "정답입니다!";
-        message.className = "success";
-        
-      } else {
-        message.textContent = "틀렸습니다. 다시 시도해보세요.";
-        message.className = "";
+    document.addEventListener('DOMContentLoaded', () => {
+      function updateClock() {
+        const now = new Date();
+        const h = String(now.getHours()).padStart(2, '0');
+        const m = String(now.getMinutes()).padStart(2, '0');
+        const s = String(now.getSeconds()).padStart(2, '0');
+        document.getElementById('clock').textContent = `${h}:${m}:${s}`;
       }
-    }
+
+      updateClock();
+      setInterval(updateClock, 1000);
+
+      window.checkAnswer = function() {
+        const input = document.getElementById('answerInput').value.trim();
+        const currentSeconds = new Date().getSeconds();
+        const message = document.getElementById('message');
+
+        if (input === "3.141" && currentSeconds >= 10 && currentSeconds <= 15) {
+          message.textContent = "정답입니다!";
+          message.className = "success";
+        } else {
+          message.textContent = "틀렸습니다. 다시 시도해보세요.";
+          message.className = "";
+        }
+      }
+    });
   </script>
 </body>
 </html>
