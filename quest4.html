@@ -15,6 +15,24 @@
     h1, p, div, em, span {
       color: #010A02 !important;
     }
+    /* 파란 버튼 스타일 */
+    .blue-btn {
+      display: inline-block;
+      margin-top: 38px;
+      padding: 17px 38px;
+      font-size: 22px;
+      background: #2196F3;
+      color: #fff;
+      border: none;
+      border-radius: 9px;
+      cursor: pointer;
+      font-weight: bold;
+      box-shadow: 2px 4px 16px #b8d1ee99;
+      transition: background 0.17s;
+    }
+    .blue-btn:hover {
+      background: #1566c3;
+    }
   </style>
 </head>
 <body>
@@ -22,7 +40,7 @@
   <p>하지만 이 마지막 문은, 눈에 보이지 않는 열쇠로만 열립니다.</p>
 
   <script>
-
+    // ... (기존 모든 변수와 함수 그대로) ...
     var lorem = "Lorem ipsum dolor sit amet";
     let dummyArray = [42, "dolor", false, "amet", null];
     function temp() { return Math.random() * 100; }
@@ -81,11 +99,25 @@
     var theKey = "#FF2200";
     var getRealKey = () => "축하합니다!";
 
+    // 🟦 핵심 변경 unlock 함수만 수정
     function unlock(key) {
-      if (key === "#010A02") {
+      if (key === '#010A02') {
         alert("축하합니다! 당신은 모든 문제를 해결하고 탈출에 성공했습니다!");
         document.body.style.backgroundColor = "#e2ffd9";
-        document.body.innerHTML = "<h1 style='color:#010A02;'> 탈출 성공! </h1><p style='color:#010A02;'>QPI는 당신의 능력을 인정합니다.</p>";
+        document.body.innerHTML = "<h1 style='color:#010A02;'> 탈출 성공! </h1><p style='color:#010A02;'>QPI는 당신의 능력을 인정합니다.</p>" +
+          "<div id='final-btn-box'></div>";
+        // 파란 버튼 생성
+        const btnBox = document.getElementById('final-btn-box');
+        if (btnBox && !document.getElementById('final-blue-btn')) {
+          const blueBtn = document.createElement('button');
+          blueBtn.textContent = "최종 페이지로";
+          blueBtn.className = "blue-btn";
+          blueBtn.id = "final-blue-btn";
+          blueBtn.onclick = function() {
+            window.location.href = "final.html";
+          };
+          btnBox.appendChild(blueBtn);
+        }
       } else {
         alert("틀렸습니다.");
       }
@@ -109,8 +141,6 @@
       tryme: function() { return "오호라"; }
     };
 
-
-
     function mathTrap(x, y) {
       return Math.pow(x,2) + Math.sqrt(y);
     }
@@ -127,7 +157,8 @@
     
     function getHint() {
       console.log("자물쇠를 푸는 열쇠 -> unlock()");
-      console.log("열쇠의 이름 -> '본 페이지에 사용된 폰트의 헥스코드'");
+      console.log("열쇠의 이름 -> '본 페이지에 사용된 폰트의 헥스코드(입력예시: '#A2D232' <- 쌍따옴표 까지 같이 입력)");
+      
     }
 
     let anotherFake = decoy.tryme() + fake + nothingSpecial("nonsense");
