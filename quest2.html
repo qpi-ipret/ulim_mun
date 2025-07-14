@@ -6,6 +6,7 @@
   <title>Time Gate</title>
   <style>
     body {
+
       font-family: 'Noto Sans KR', sans-serif;
       display: flex;
       justify-content: center;
@@ -16,7 +17,6 @@
       position: relative;
     }
 
-    /* 왼쪽 위 시계 */
     #clock {
       position: absolute;
       top: 10px;
@@ -68,6 +68,19 @@
     .success {
       color: green;
     }
+
+    .next-btn {
+      margin-top: 20px;
+      background-color: #2196F3;
+      color: #fff;
+      font-weight: bold;
+      border: none;
+      border-radius: 10px;
+      padding: 12px;
+      width: 100%;
+      cursor: pointer;
+      font-size: 16px;
+    }
   </style>
 </head>
 <body>
@@ -80,35 +93,51 @@
     <input type="text" id="answerInput" placeholder="힌트:'인생은 타이밍'" />
     <button onclick="checkAnswer()">제출</button>
     <p id="message"></p>
+    <div id="next"></div>
   </div>
 
   <script>
-    document.addEventListener('DOMContentLoaded', () => {
-      function updateClock() {
-        const now = new Date();
-        const h = String(now.getHours()).padStart(2, '0');
-        const m = String(now.getMinutes()).padStart(2, '0');
-        const s = String(now.getSeconds()).padStart(2, '0');
-        document.getElementById('clock').textContent = `${h}:${m}:${s}`;
-      }
+    // 시계 업데이트 함수
+    function updateClock() {
+      const now = new Date();
+      const h = String(now.getHours()).padStart(2, '0');
+      const m = String(now.getMinutes()).padStart(2, '0');
+      const s = String(now.getSeconds()).padStart(2, '0');
+      document.getElementById('clock').textContent = `${h}:${m}:${s}`;
+    }
 
-      updateClock();
-      setInterval(updateClock, 1000);
+    setInterval(updateClock, 1000);
+    updateClock();
 
-      window.checkAnswer = function() {
-        const input = document.getElementById('answerInput').value.trim();
-        const currentSeconds = new Date().getSeconds();
-        const message = document.getElementById('message');
+    function checkAnswer() {
+      const input = document.getElementById('answerInput').value.trim();
+      let a = input
+      alert(input)
+      const currentSeconds = new Date().getSeconds();
+      const message = document.getElementById('message');
+      const nextDiv = document.getElementById('next');
 
-        if (input === "3.141" && currentSeconds >= 10 && currentSeconds <= 15) {
-          message.textContent = "정답입니다!";
-          message.className = "success";
-        } else {
-          message.textContent = "틀렸습니다. 다시 시도해보세요.";
-          message.className = "";
+      if (input === "3.141" && currentSeconds >= 0 && currentSeconds <= 59) {
+        message.textContent = "정답입니다!";
+        message.className = "success";
+
+        // 이미 버튼이 없을 때만 생성
+        if (!document.getElementById('nextBtn')) {
+          const nextBtn = document.createElement('button');
+          nextBtn.textContent = "다음 문제로";
+          nextBtn.className = "next-btn";
+          nextBtn.id = "nextBtn";
+          nextBtn.onclick = function() {
+            window.location.href = "quest3.html";
+          };
+          nextDiv.appendChild(nextBtn);
         }
+      } else {
+        message.textContent = "틀렸습니다. 다시 시도해보세요.";
+        message.className = "";
+        nextDiv.innerHTML = ""; // 오답일 때 버튼 숨김
       }
-    });
+    }
   </script>
 </body>
 </html>
