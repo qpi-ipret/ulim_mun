@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <title>탈출의 끝</title>
+  <style>
+    body {
+      background: #fff;
+      color: #010A02;
+      font-family: sans-serif;
+      text-align: center;
+      padding-top: 100px;
+      margin: 0;
+    }
+    h1, p, div, em, span {
+      color: #010A02 !important;
+    }
+  </style>
+</head>
+<body>
+  <h1>여기까지 온 당신, 대단하군요.</h1>
+  <p>하지만 이 마지막 문은, 눈에 보이지 않는 열쇠로만 열립니다.</p>
+
+  <script>
+
+    var lorem = "Lorem ipsum dolor sit amet";
+    let dummyArray = [42, "dolor", false, "amet", null];
+    function temp() { return Math.random() * 100; }
+
+    function notUsed1(a, b) {
+      return a + b + lorem.split(' ')[2];
+    }
+    var loremObj = {
+      foo: "bar",
+      num: 1004,
+      func: function() { return "baz"; }
+    };
+
+    function nothingSpecial(val) {
+      return typeof val === "string" ? val.length : 0;
+    }
+
+    let mixData = [1, "x", null, undefined, 3.14, "010A02", {}];
+
+    console.log("힌트는 항상 존재합니다.");
+    console.log("getHint()");
+    console.log("두드리라, 그리하면 열릴것이라");
+
+    try {
+      var nothing = "Sed ut perspiciatis unde";
+      let unused = function() { return lorem.length * 2; };
+    } catch(e) {}
+
+    function mysteryFunc(x) {
+      let arr = [];
+      for(let i=0; i<x; i++) arr.push(i*2);
+      return arr;
+    }
+
+    function decoyNumber() {
+      let n = 7;
+      while(n < 30) { n += Math.floor(Math.random()*4); }
+      return n;
+    }
+
+    function noiseFunc(a, b, c) {
+      return (a || 0) + (b || 0) - (c || 0);
+    }
+
+    function unusedUnlock(k) { return "Nope"; }
+
+    function uselessTask(str) {
+      let s = "";
+      for(let i=0; i<str.length; i+=2) s += str[i];
+      return s;
+    }
+
+    let isOpen = false;
+    const NOT_KEY = "qwerty";
+    function distract() { return NOT_KEY + lorem; }
+    var theKey = "#FF2200";
+    var getRealKey = () => "축하합니다!";
+
+    function unlock(key) {
+      if (key === "#010A02") {
+        alert("축하합니다! 당신은 모든 문제를 해결하고 탈출에 성공했습니다!");
+        document.body.style.backgroundColor = "#e2ffd9";
+        document.body.innerHTML = "<h1 style='color:#010A02;'> 탈출 성공! </h1><p style='color:#010A02;'>QPI는 당신의 능력을 인정합니다.</p>";
+      } else {
+        alert("틀렸습니다.");
+      }
+    }
+
+    function dummyLogic(a) {
+      if (typeof a === "number") {
+        return a * 100 + 42;
+      }
+      return null;
+    }
+
+    function loremIpsumGen(n) {
+      let text = "";
+      for(let i=0; i<n; i++) text += "lorem ";
+      return text;
+    }
+
+    var fake = loremIpsumGen(3);
+    var decoy = {
+      tryme: function() { return "오호라"; }
+    };
+
+
+
+    function mathTrap(x, y) {
+      return Math.pow(x,2) + Math.sqrt(y);
+    }
+
+    function neverUsedArr() {
+      let arr = [];
+      for(let i=1; i<=5; i++) arr.push(i*i-i);
+      return arr.reverse();
+    }
+
+    function confusion(a, b) {
+      return (a + b).toString(16) + "?" + (a - b);
+    }
+    
+    function getHint() {
+      console.log("자물쇠를 푸는 열쇠 -> unlock()");
+      console.log("열쇠의 이름 -> '본 페이지에 사용된 폰트의 헥스코드'");
+    }
+
+    let anotherFake = decoy.tryme() + fake + nothingSpecial("nonsense");
+
+    function unrelatedAlpha() {
+      return String.fromCharCode(75, 69, 89);
+    }
+
+  </script>
+</body>
+</html>
