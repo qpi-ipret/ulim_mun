@@ -1,0 +1,312 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>PIN Code Access</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@600&display=swap" rel="stylesheet" />
+  <style>
+    body {
+      font-family: 'Noto Sans KR', sans-serif;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      background-color: #f0f0f3;
+      margin: 0;
+      position: relative;
+    }
+    .container {
+      background-color: #f0f0f3;
+      padding: 40px;
+      border-radius: 20px;
+      box-shadow: 10px 10px 20px #d1d9e6, -10px -10px 20px #ffffff;
+      text-align: center;
+      max-width: 400px;
+      width: 100%;
+      position: relative;
+      z-index: 1;
+    }
+    h1 {
+      margin-bottom: 20px;
+      font-size: 24px;
+      color: #333;
+    }
+    .input-container {
+      margin-bottom: 20px;
+    }
+    .input-box {
+      width: 100%;
+      height: 50px;
+      padding: 15px;
+      border-radius: 20px;
+      background: #f0f0f3;
+      box-shadow: inset 5px 5px 10px #d1d9e6, inset -5px -5px 10px #ffffff;
+      font-size: 18px;
+      text-align: center;
+      margin-bottom: 10px;
+    }
+    #submit-button {
+      background-color: #4CAF50;
+      color: white;
+      border: none;
+      padding: 15px;
+      border-radius: 10px;
+      font-size: 18px;
+      cursor: pointer;
+      width: 100%;
+    }
+    #submit-button:hover {
+      background-color: #45a049;
+    }
+    #error-message {
+      color: red;
+      display: none;
+      margin-top: 10px;
+    }
+    .hidden-content {
+      display: none;
+      opacity: 0;
+      transform: scale(0.9);
+      transition: opacity 0.5s ease, transform 0.5s ease;
+    }
+    .hidden-content.visible {
+      display: block;
+      opacity: 1;
+      transform: scale(1);
+    }
+    .hidden-content h2 {
+      margin-top: 20px;
+      color: #4CAF50;
+    }
+    .redirect-button {
+      margin-top: 20px;
+      padding: 10px 20px;
+      font-size: 16px;
+      color: #fff;
+      background-color: #4CAF50;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+      box-shadow: 5px 5px 10px #bebebe, -5px -5px 10px #ffffff;
+    }
+    .redirect-button:hover {
+      background-color: #45a049;
+    }
+
+    /* --- 왼쪽 아래 비밀 흰 박스 --- */
+    #hidden-launcher {
+      position: fixed;
+      bottom: 14px;
+      left: 14px;
+      width: 58px;
+      height: 38px;
+      background: #f0f0f3;
+      border-radius: 10px;
+      opacity: 0.93;
+      z-index: 50;
+      cursor: pointer;
+      box-shadow: none;
+      border: none;
+      transition: box-shadow 0.15s;
+    }
+    #hidden-launcher:hover {
+      box-shadow: 0 0 8px 2px #d1d9e666;
+      opacity: 1;
+    }
+
+    /* --- 중앙 소인수분해 오버레이 --- */
+    #factorizer-modal {
+      display: none;
+      position: fixed;
+      left: 0; top: 0;
+      width: 100vw; height: 100vh;
+      background: rgba(30,32,37,0.13);
+      justify-content: center;
+      align-items: center;
+      z-index: 200;
+    }
+    #factorizer-modal.active {
+      display: flex;
+    }
+    #factorizer-box {
+      background: #fff;
+      border-radius: 20px;
+      box-shadow: 0 4px 24px #aaa7, 0 1.5px 6px #fff6;
+      padding: 32px 30px 22px 30px;
+      min-width: 310px;
+      max-width: 95vw;
+      position: relative;
+      text-align: center;
+      animation: appear 0.18s;
+    }
+    @keyframes appear {
+      from { opacity:0; transform: scale(0.98);}
+      to { opacity:1; transform: scale(1);}
+    }
+    #factorizer-box input[type="number"] {
+      width: 85%;
+      padding: 12px;
+      font-size: 17px;
+      border-radius: 9px;
+      border: 1px solid #ccc;
+      margin-bottom: 13px;
+      text-align: center;
+    }
+    #factorizer-box button {
+      padding: 11px 24px;
+      background: #4CAF50;
+      color: #fff;
+      font-size: 17px;
+      border-radius: 7px;
+      border: none;
+      cursor: pointer;
+      margin-bottom: 12px;
+    }
+    #factorizer-box button:hover {
+      background: #45a049;
+    }
+    #factor-result {
+      margin-top: 8px;
+      font-size: 16px;
+      font-weight: bold;
+      color: #222;
+      min-height: 24px;
+    }
+    #factorizer-close {
+      position: absolute;
+      top: 8px;
+      right: 16px;
+      font-size: 23px;
+      background: none;
+      border: none;
+      color: #aaa;
+      cursor: pointer;
+      font-family: inherit;
+      transition: color 0.14s;
+    }
+    #factorizer-close:hover {
+      color: #d22;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>숫자 두 개를 입력해주세요.</h1>
+    <div class="input-container">
+      <input type="number" class="input-box" id="inputBox1" placeholder="첫 번째 숫자" />
+      <input type="number" class="input-box" id="inputBox2" placeholder="두 번째 숫자" />
+    </div>
+    <button id="submit-button" onclick="checkProduct()">확인</button>
+    <p id="error-message">틀린 값입니다. 다시 시도해주세요.</p>
+    <div id="protected-content" class="hidden-content">
+      <h2>로그인 성공!</h2>
+      <button class="redirect-button" onclick="window.location.href='field1'">이동하기</button>
+    </div>
+  </div>
+
+  <!-- 왼쪽 아래 흰 박스 (비밀 런처) -->
+  <div id="hidden-launcher" title="숨겨진 소인수분해 계산기 실행 영역"></div>
+
+  <!-- 중앙 오버레이 모달 -->
+  <div id="factorizer-modal">
+    <div id="factorizer-box">
+      <button id="factorizer-close" onclick="closeFactorizer()" title="닫기">&times;</button>
+      <h3 style="margin-bottom:14px;">소인수분해 계산기</h3>
+      <input type="number" id="numberInput" placeholder="자연수 입력 (최대: 2^63 - 1)" />
+      <br>
+      <button onclick="factorize()">소인수분해</button>
+      <div id="factor-result"></div>
+    </div>
+  </div>
+  <script>
+    // 기존 인증 기능
+    const correctProduct = BigInt("4951760154835678088235319297");
+    const protectedContent = document.getElementById('protected-content');
+    const errorMessage = document.getElementById('error-message');
+    function checkProduct() {
+      const n1 = BigInt(document.getElementById('inputBox1').value || 0);
+      const n2 = BigInt(document.getElementById('inputBox2').value || 0);
+      if (n1 === 1n || n2 === 1n) {
+        errorMessage.textContent = '1은 사용할 수 없는 값입니다. 다시 입력하세요.';
+        errorMessage.style.display = 'block';
+        protectedContent.classList.remove('visible');
+        return;
+      }
+      if (n1 * n2 === correctProduct) {
+        errorMessage.style.display = 'none';
+        protectedContent.classList.add('visible');
+      } else {
+        errorMessage.textContent = '틀린 값입니다. 다시 시도해주세요.';
+        errorMessage.style.display = 'block';
+        protectedContent.classList.remove('visible');
+      }
+    }
+
+    // 소인수분해 모달 관련
+    const launcher = document.getElementById('hidden-launcher');
+    const modal = document.getElementById('factorizer-modal');
+    const numberInput = document.getElementById('numberInput');
+    const factorResult = document.getElementById('factor-result');
+
+    launcher.addEventListener('click', function(e) {
+      modal.classList.add('active');
+      numberInput.value = '';
+      factorResult.textContent = '';
+      factorResult.style.color = "#222";
+      setTimeout(() => numberInput.focus(), 100);
+    });
+    function closeFactorizer() {
+      modal.classList.remove('active');
+    }
+    // 모달 바깥(어두운 배경) 클릭 시 닫기
+    modal.addEventListener('mousedown', function(e) {
+      if (e.target === modal) closeFactorizer();
+    });
+
+    function factorize() {
+      const input = numberInput.value.trim();
+      if (!input) {
+        factorResult.textContent = '숫자를 입력하세요.';
+        factorResult.style.color = "#d22";
+        return;
+      }
+      let num;
+      try {
+        num = BigInt(input);
+      } catch {
+        factorResult.textContent = '올바른 자연수를 입력하세요.';
+        factorResult.style.color = "#d22";
+        return;
+      }
+      const max = BigInt('9223372036854775807');
+      if (num <= 1n || num > max) {
+        factorResult.textContent = '❌ 2^63 - 1 이하의 자연수를 입력하세요.';
+        factorResult.style.color = "#d22";
+        return;
+      }
+      let factors = [];
+      let divisor = 2n;
+      let tempNum = num;
+      while (divisor * divisor <= tempNum) {
+        if (tempNum % divisor === 0n) {
+          factors.push(divisor.toString());
+          tempNum /= divisor;
+        } else {
+          divisor++;
+        }
+      }
+      if (tempNum > 1n) factors.push(tempNum.toString());
+      factorResult.style.color = "#222";
+      factorResult.textContent = "🔍 소인수: " + factors.join(" × ");
+    }
+
+    // 엔터로도 계산 (input에서)
+    numberInput.addEventListener('keydown', function(e) {
+      if (e.key === "Enter") factorize();
+    });
+  </script>
+</body>
+</html>
