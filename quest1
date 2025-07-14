@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Time Gate</title>
+  <style>
+    body {
+      font-family: 'Noto Sans KR', sans-serif;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      background-color: #f6f8fa;
+      margin: 0;
+      position: relative;
+    }
+
+    /* 왼쪽 위 시계 */
+    #clock {
+      position: absolute;
+      top: 10px;
+      left: 20px;
+      font-size: 16px;
+      color: #444;
+      font-weight: bold;
+    }
+
+    .container {
+      background: #fff;
+      padding: 40px;
+      border-radius: 16px;
+      box-shadow: 4px 4px 15px rgba(0,0,0,0.1);
+      text-align: center;
+      width: 320px;
+    }
+
+    input {
+      padding: 12px;
+      font-size: 18px;
+      width: 100%;
+      margin-bottom: 20px;
+      border-radius: 10px;
+      border: 1px solid #ccc;
+    }
+
+    button {
+      padding: 12px 20px;
+      font-size: 16px;
+      background-color: #4CAF50;
+      color: white;
+      border: none;
+      border-radius: 10px;
+      cursor: pointer;
+      width: 100%;
+    }
+
+    button:hover {
+      background-color: #45a049;
+    }
+
+    #message {
+      margin-top: 20px;
+      font-weight: bold;
+      color: red;
+    }
+
+    .success {
+      color: green;
+    }
+  </style>
+</head>
+<body>
+  <!-- 시계 표시 영역 -->
+  <div id="clock"></div>
+
+  <div class="container">
+    <h1>원주율을 소수점 아래</h1>
+    <h1>3자리까지 입력하세요</h1>
+    <input type="text" id="answerInput" placeholder="힌트:'인생은 타이밍'" />
+    <button onclick="checkAnswer()">제출</button>
+    <p id="message"></p>
+  </div>
+
+  <script>
+    // 시계 업데이트 함수
+    function updateClock() {
+      const now = new Date();
+      const h = String(now.getHours()).padStart(2, '0');
+      const m = String(now.getMinutes()).padStart(2, '0');
+      const s = String(now.getSeconds()).padStart(2, '0');
+      document.getElementById('clock').textContent = `${h}:${m}:${s}`;
+    }
+
+    // 1초마다 시계 업데이트
+    setInterval(updateClock, 1000);
+    updateClock(); // 처음 한 번 즉시 실행
+
+    function checkAnswer() {
+      const input = document.getElementById('answerInput').value.trim();
+      const currentSeconds = new Date().getSeconds();
+
+      const message = document.getElementById('message');
+
+      if (input === "3.141" && currentSeconds === 10) {
+        message.textContent = "정답입니다!";
+        message.className = "success";
+        
+      } else {
+        message.textContent = "틀렸습니다. 다시 시도해보세요.";
+        message.className = "";
+      }
+    }
+  </script>
+</body>
+</html>
