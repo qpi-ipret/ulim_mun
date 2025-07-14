@@ -72,7 +72,7 @@
     <input type="text" id="inputBox" placeholder="힌트는 어디에 있을까?" />
     <button onclick="checkAnswer()">제출</button>
     <p id="message"></p>
-    <div id="next"></div>
+    <div id="next"></div> <!-- 다음 버튼이 들어갈 자리 -->
   </div>
 
   <script>
@@ -85,7 +85,7 @@
       if (input === correct) {
         message.textContent = "정답입니다!";
         message.className = "success";
-        // 파란 버튼이 없으면 새로 생성
+        // 버튼이 이미 있으면 추가 생성 방지
         if (!document.getElementById('nextBtn')) {
           const nextBtn = document.createElement('button');
           nextBtn.textContent = "다음 문제로";
@@ -99,7 +99,7 @@
       } else {
         message.textContent = "틀렸습니다.";
         message.className = "fail";
-        nextDiv.innerHTML = ""; // 버튼이 있으면 사라짐
+        nextDiv.innerHTML = ""; // 오답일 때 버튼 숨김
       }
     }
   </script>
