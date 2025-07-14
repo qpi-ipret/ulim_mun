@@ -50,6 +50,18 @@
     .fail {
       color: red;
     }
+    .next-btn {
+      margin-top: 20px;
+      background-color: #2196F3;
+      color: #fff;
+      font-weight: bold;
+      border: none;
+      border-radius: 8px;
+      padding: 12px;
+      width: 100%;
+      cursor: pointer;
+      font-size: 16px;
+    }
   </style>
 </head>
 <body>
@@ -60,6 +72,7 @@
     <input type="text" id="inputBox" placeholder="힌트는 어디에 있을까?" />
     <button onclick="checkAnswer()">제출</button>
     <p id="message"></p>
+    <div id="next"></div>
   </div>
 
   <script>
@@ -67,13 +80,26 @@
       const input = document.getElementById('inputBox').value.trim();
       const correct = document.getElementById('hidden').dataset.answer;
       const message = document.getElementById('message');
+      const nextDiv = document.getElementById('next');
 
       if (input === correct) {
         message.textContent = "정답입니다!";
         message.className = "success";
+        // 파란 버튼이 없으면 새로 생성
+        if (!document.getElementById('nextBtn')) {
+          const nextBtn = document.createElement('button');
+          nextBtn.textContent = "다음 문제로";
+          nextBtn.className = "next-btn";
+          nextBtn.id = "nextBtn";
+          nextBtn.onclick = function() {
+            window.location.href = "quest2.html";
+          };
+          nextDiv.appendChild(nextBtn);
+        }
       } else {
         message.textContent = "틀렸습니다.";
         message.className = "fail";
+        nextDiv.innerHTML = ""; // 버튼이 있으면 사라짐
       }
     }
   </script>
