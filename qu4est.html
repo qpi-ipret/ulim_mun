@@ -40,7 +40,6 @@
   <p>하지만 이 마지막 문은, 눈에 보이지 않는 열쇠로만 열립니다.</p>
 
   <script>
-    // ... (기존 모든 변수와 함수 그대로) ...
     var lorem = "Lorem ipsum dolor sit amet";
     let dummyArray = [42, "dolor", false, "amet", null];
     function temp() { return Math.random() * 100; }
@@ -61,7 +60,6 @@
     let mixData = [1, "x", null, undefined, 3.14, "010A02", {}];
 
     console.log("힌트는 항상 존재합니다.");
-    console.log("getHint()");
     console.log("두드리라, 그리하면 열릴것이라");
 
     try {
@@ -99,14 +97,12 @@
     var theKey = "#FF2200";
     var getRealKey = () => "축하합니다!";
 
-    // 🟦 핵심 변경 unlock 함수만 수정
     function unlock(key) {
       if (key === '#010A02') {
         alert("축하합니다! 당신은 모든 문제를 해결하고 탈출에 성공했습니다!");
         document.body.style.backgroundColor = "#e2ffd9";
         document.body.innerHTML = "<h1 style='color:#010A02;'> 탈출 성공! </h1><p style='color:#010A02;'>QPI는 당신의 능력을 인정합니다.</p>" +
           "<div id='final-btn-box'></div>";
-        // 파란 버튼 생성
         const btnBox = document.getElementById('final-btn-box');
         if (btnBox && !document.getElementById('final-blue-btn')) {
           const blueBtn = document.createElement('button');
