@@ -96,7 +96,6 @@
       background-color: #45a049;
     }
 
-    /* --- 왼쪽 아래 비밀 흰 박스 --- */
     #hidden-launcher {
       position: fixed;
       bottom: 14px;
@@ -117,7 +116,6 @@
       opacity: 1;
     }
 
-    /* --- 중앙 소인수분해 오버레이 --- */
     #factorizer-modal {
       display: none;
       position: fixed;
@@ -207,10 +205,8 @@
     </div>
   </div>
 
-  <!-- 왼쪽 아래 흰 박스 (비밀 런처) -->
   <div id="hidden-launcher" title="숨겨진 소인수분해 계산기 실행 영역"></div>
 
-  <!-- 중앙 오버레이 모달 -->
   <div id="factorizer-modal">
     <div id="factorizer-box">
       <button id="factorizer-close" onclick="closeFactorizer()" title="닫기">&times;</button>
@@ -222,7 +218,6 @@
     </div>
   </div>
   <script>
-    // 기존 인증 기능
     const correctProduct = BigInt("4951760154835678088235319297");
     const protectedContent = document.getElementById('protected-content');
     const errorMessage = document.getElementById('error-message');
@@ -245,7 +240,6 @@
       }
     }
 
-    // 소인수분해 모달 관련
     const launcher = document.getElementById('hidden-launcher');
     const modal = document.getElementById('factorizer-modal');
     const numberInput = document.getElementById('numberInput');
@@ -261,7 +255,6 @@
     function closeFactorizer() {
       modal.classList.remove('active');
     }
-    // 모달 바깥(어두운 배경) 클릭 시 닫기
     modal.addEventListener('mousedown', function(e) {
       if (e.target === modal) closeFactorizer();
     });
@@ -303,7 +296,6 @@
       factorResult.textContent = "🔍 소인수: " + factors.join(" × ");
     }
 
-    // 엔터로도 계산 (input에서)
     numberInput.addEventListener('keydown', function(e) {
       if (e.key === "Enter") factorize();
     });
